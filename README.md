@@ -3,13 +3,17 @@ Send text messages with the Linux shell
 
 ## Start
 
-```bash Cerebro.sh```
+### Show options
+
+```bash Cerebro.sh --help```
 
 OR
 
 ```chmod +x Cerebro.sh && ./Cerebro.sh```
 
 ## Cerebro
+
+### Send text message function output
 
 ```
 ──────────────────────────────
