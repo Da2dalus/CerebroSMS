@@ -79,74 +79,219 @@ On_IWhite='\033[0;107m'   # White
 
 # List made by Shakiba Moshiri
 
-# ----------------------------------------------------------
+# Banner and welcoming ----------------------------------------------------
 
-echo -e "$Green
-──────────────────────────────
-─────▄▄▄▄▄────────────────────
-──▄█████████▄─────────────────
-─███▄─────▄███─ CEREBRO v1.2 ─
-▐██─▀█▄─▄█▀─██▌───────────────
-▐█▌───▀█▀───▐█▌───────────────
-▐█▌──▄█▀█▄──▐█▌───────────────
-▐██▄█▀───▀█▄██▌───────────────
-─▀██▄▄▄▄▄▄▄██▀────────────────
-───▀▀█████▀▀──────────────────
-────────────────────────────── $NC"
 
-echo " "
-echo -e "$BGreen Hello Professor... $NC"
-echo -e "$Green Welcome to Cerebro $NC"
-sleep 3
-echo " "
-echo -e "$Green With Cerebro U can send text messages using the TextBelt API. $NC"
-echo "  "
-echo -e "$Green Let's begin... $NC"
-echo " "
-
-sleep 2
-
-echo "  "
-echo -e "$Green Phone: $NC"
-echo "  "
-
-read PHONE
-
-echo "  "
-echo -e "$Green Message: $NC"
-echo "  "
-
-read SMS
-
-echo "  "
-echo -e "$Green TextBelt API key. Default key = textbelt (1 free text per day): $NC"
-echo "  "
-
-read INPUTKEY
-
-function smssend() {
+function banner() {
    
-   curl -X POST https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d key="$KEY"
+   echo -e "$Green
+   ─────────────────────────────────────────────────────────────────
+   ──────────▄▄▄▄▄──────────────────────────────────────────────────
+   ───────▄█████████▄───────────────────────────────────────────────
+   ──────███▄─────▄███─ CEREBRO v1.3 ───────────────────────────────
+   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
+   ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
+   ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
+   ─────▐██▄█▀───▀█▄██▌─────────────────────────────────────────────
+   ──────▀██▄▄▄▄▄▄▄██▀──────────────────────────────────────────────
+   ────────▀▀█████▀▀────────────────────────────────────────────────
+   ───────────────────────────────────────────────────────────────── $NC"
+   
+   echo " "
+   echo -e "$BGreen Hello Professor... $NC"
+   echo -e "$Green Welcome to Cerebro $NC"
+   
+   sleep 3
+   echo " "
+   
+   echo -e "$Green 
+   With Cerebro U can send, receive and check the 
+   status of text messages using the TextBelt API. $NC"
+   echo "  "
+   
+   echo -e "$Green Let's begin... $NC"
+   echo " "
+   
+   sleep 2
 }
 
-if [ "$INPUTKEY" == "" ]
+# --------------------------------------------------------
+
+function byemsg() {
+   
+   echo "  "
+   echo -e "$Green Done... $NC"
+   sleep 3
+   echo -e "$Green Closing Cerebro... $NC"
+   sleep 4
+   echo " "
+   echo -e "$BGreen Bye Professor... $NC"
+   sleep 2
+   exit
+}
+
+# ----------------------------------------------
+
+function SENDSMS() {
+   
+   echo "  "
+   echo -e "$Green Phone: $NC"
+   echo "  "
+   
+   read PHONE
+   
+   echo "  "
+   echo -e "$Green Message: $NC"
+   echo "  "
+   
+   read SMS
+   
+   echo "  "
+   echo -e "$Green Webhook url (example yourwebsite.com). Default = no replie: $NC"
+   echo "  "
+   
+   read WEBHOOK
+   
+   echo "  "
+   echo -e "$Green TextBelt API key. Default key = textbelt (1 free text per day): $NC"
+   echo "  "
+   
+   read INPUTKEY
+   
+   function smssend() {
+      SMSRESULT=$(curl -X POST https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d key="$KEY")
+   }
+   
+   function smssendwithwebhook() {
+      SMSRESULT=$(curl -X POST https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d replyWebhookUrl='https://"$WEBHOOK"/api/handleSmsReply' -d key="$KEY")
+   }
+
+   function keycheck() {
+      
+      if [ "$INPUTKEY" == "" ]
+      
+      then
+         KEY="textbelt"
+         smssend
+      
+      else
+         KEY="$INPUTKEY"
+         smssend
+      fi
+   }
+   
+   function webhookkeycheck() {
+      
+      if [ "$INPUTKEY" == "" ]
+      
+      then
+         KEY="textbelt"
+         smssendwithwebhook
+      
+      else
+         KEY="$INPUTKEY"
+         smssendwithwebhook
+      fi
+   }
+
+   if [ "$WEBHOOK" == "" ]
+   
+   then
+      keycheck
+   
+   else
+      webhookkeycheck
+   fi
+   
+   if [ SMSRESULT == *"true"* ]
+   
+   then
+       echo -e "$BGreen SUCCESS $NC"
+       echo "  "
+       echo "$SMSRESULT"
+       WEBHOOKCHECK
+    else
+       echo -e "$BRed FAIL $NC"
+       echo "  "
+       echo "$SMSRESULT"
+       byemsg
+    fi
+}
+
+function SMSCHECK() {
+   
+   echo "  "
+   echo -e "$Green Text ID (example 12589): $NC"
+   echo "  "
+   
+   read TEXTID
+   
+   STATUSRESULT=$(curl https://textbelt.com/status/"$TEXTID")
+   
+   echo "$STATUSRESULT"
+}
+
+function WEBHOOKCHECK() {
+   
+   if [ "$WEBHOOK" == "" ]
+   
+   then
+      byemsg
+   
+   else
+      REPLIECHECK
+   fi
+
+   function REPLIECHECK() {
+      echo -e "$BGreen Listening for replies..."
+      while true
+      do
+         curl https://"$WEBHOOK"/api/handleSmsReply
+      done
+   }
+}
+
+# ------------------------------------------------------------------
+
+function helpfunction() {
+   
+   echo "  "
+   echo -e "$BGreen Available opions: $NC"
+   echo -e " "
+   echo -e "$BGreen Show this page: --help $NC"
+   echo -e "$BGreen Check text message status: --statuscheck $NC"
+   echo -e "$BGreen Send text message: --sendsms $NC"
+   echo "  "
+}
+
+# -------------------------------------------------------------
+
+if [ "$1" == "--statuscheck" ]
 
 then
-   KEY="textbelt"
-   smssend
+   banner
+   SMSCHECK
+   byemsg
+
+elif [ "$1" == "--sendsms" ]
+
+then
+   banner
+   SENDSMS
+
+elif [ "$1" == "--help" ]
+
+then
+   helpfunction
+
+elif [ $# -le 0 ]
+
+then
+   echo -e "$Red No arguments specified! $NC"
+   echo -e "$Red Use$NC $BRed--help$NC $Red to display options.$NC"
 
 else
-   KEY="$INPUTKEY"
-   smssend
+   echo -e "$Red No such argument available!$NC"
+   echo -e "$Red Use$NC $BRed--help$NC $Red to display options.$NC" 
+
 fi
-
-
-echo "  "
-echo -e "$Green Done... $NC"
-sleep 3
-echo -e "$Green Closing Cerebro... $NC"
-sleep 4
-echo " "
-echo -e "$BGreen Bye Professor... $NC"
-sleep 2
-exit
