@@ -88,8 +88,8 @@ function banner() {
    ─────────────────────────────────────────────────────────────────
    ──────────▄▄▄▄▄──────────────────────────────────────────────────
    ───────▄█████████▄───────────────────────────────────────────────
-   ──────███▄─────▄███─ CEREBRO v1.3 ───────────────────────────────
-   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
+   ──────███▄─────▄███─ CEREBRO v1.4 ───────────────────────────────
+   ─────▐██─▀█▄─▄█▀─██▌──────── Created by TheG0df2hter ────────────
    ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
    ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
    ─────▐██▄█▀───▀█▄██▌─────────────────────────────────────────────
@@ -104,9 +104,8 @@ function banner() {
    sleep 3
    echo " "
    
-   echo -e "$Green 
-   With Cerebro U can send, receive and check the 
-   status of text messages using the TextBelt API. $NC"
+   echo -e "$Green With Cerebro U can send, receive and check the $NC"
+   echo -e "$Green status of text messages using the TextBelt API. $NC"
    echo "  "
    
    echo -e "$Green Let's begin... $NC"
@@ -131,6 +130,27 @@ function byemsg() {
 }
 
 # ----------------------------------------------
+
+function WEBHOOKCHECK() {
+   
+   if [ "$WEBHOOK" == "" ]
+   
+   then
+      byemsg
+   
+   else
+      REPLIECHECK
+   fi
+
+   function REPLIECHECK() {
+      echo "  "
+      echo -e "$BGreen Listening for replies..."
+      while true
+      do
+         curl https://"$WEBHOOK"/api/handleSmsReply
+      done
+   }
+}
 
 function SENDSMS() {
    
@@ -203,20 +223,29 @@ function SENDSMS() {
       webhookkeycheck
    fi
    
-   if [ SMSRESULT == *"true"* ]
+   if grep -q true <<<"$SMSRESULT"
    
    then
+       echo "  "
        echo -e "$BGreen SUCCESS $NC"
        echo "  "
+       echo -e "$BGreen TextBelt response: $NC"
+       echo " "
        echo "$SMSRESULT"
        WEBHOOKCHECK
     else
+       echo "  "
        echo -e "$BRed FAIL $NC"
        echo "  "
+       echo -e "$BGreen TextBelt response: $NC"
+       echo " "
        echo "$SMSRESULT"
+       echo " "
        byemsg
     fi
 }
+
+# ----------------------------------------------------------------------
 
 function SMSCHECK() {
    
@@ -228,27 +257,66 @@ function SMSCHECK() {
    
    STATUSRESULT=$(curl https://textbelt.com/status/"$TEXTID")
    
+   echo "  "
+   echo -e "$BGreen TextBelt response: $NC"
+   echo " "
    echo "$STATUSRESULT"
+   echo "  "
 }
 
-function WEBHOOKCHECK() {
+# -------------------------------------------------------------------
+
+function QUOTACHECK() {
    
-   if [ "$WEBHOOK" == "" ]
+   echo "  "
+   echo -e "$Green TextBelt API Key (example abc123): $NC"
+   echo "  "
+   
+   read KEY
+   
+   STATUSRESULT=$(curl https://textbelt.com/quota/"$KEY")
+   
+   echo " "
+   echo -e "$BGreen TextBelt response: $NC"
+   echo " "
+   echo "$STATUSRESULT"
+   echo "  "
+}
+
+# ----------------------------------------------------------------------
+
+function TESTSMS() {
+   
+   echo "  "
+   echo -e "$Green TextBelt API key: $NC"
+   echo "  "
+   
+   read KEY
+   
+   KEY=$KEY"_test"
+   TESTRESULT=$(curl -X POST https://textbelt.com/text --data-urlencode phone="8999000" --data-urlencode message="hi" -d key="$KEY")
+   
+   if grep -q true <<<"$TESTRESULT"
    
    then
+      echo "  "
+      echo -e "$BGreen SUCCESS $NC"
+      echo "  "
+      echo -e "$BGreen TextBelt response: $NC"
+      echo " "
+      echo "$TESTRESULT"
       byemsg
-   
    else
-      REPLIECHECK
+      echo "  "
+      echo -e "$BRed FAIL $NC"
+      echo "  "
+      echo -e "$BGreen TextBelt response: $NC"
+      echo " "
+      echo "$TESTRESULT"
+      echo " "
+      byemsg
    fi
-
-   function REPLIECHECK() {
-      echo -e "$BGreen Listening for replies..."
-      while true
-      do
-         curl https://"$WEBHOOK"/api/handleSmsReply
-      done
-   }
+   
 }
 
 # ------------------------------------------------------------------
@@ -261,6 +329,8 @@ function helpfunction() {
    echo -e "$BGreen Show this page: --help $NC"
    echo -e "$BGreen Check text message status: --statuscheck $NC"
    echo -e "$BGreen Send text message: --sendsms $NC"
+   echo -e "$BGreen Check if you have remaining quota: --quotacheck $NC"
+   echo -e "$BGreen Test if everything is working: --testsms $NC"
    echo "  "
 }
 
@@ -283,6 +353,18 @@ elif [ "$1" == "--help" ]
 
 then
    helpfunction
+
+elif [ "$1" == "--quotacheck" ]
+
+then
+   banner
+   QUOTACHECK
+
+elif [ "$1" == "--testsms" ]
+
+then
+   banner
+   TESTSMS
 
 elif [ $# -le 0 ]
 
