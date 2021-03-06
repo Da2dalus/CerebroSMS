@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Author: TheG0df2ther
+
 # Colors and special caracters
 
 # Reset
@@ -88,8 +90,8 @@ function banner() {
    ─────────────────────────────────────────────────────────────────
    ──────────▄▄▄▄▄──────────────────────────────────────────────────
    ───────▄█████████▄───────────────────────────────────────────────
-   ──────███▄─────▄███─ CEREBRO v1.4 ───────────────────────────────
-   ─────▐██─▀█▄─▄█▀─██▌──────── Created by TheG0df2hter ────────────
+   ──────███▄─────▄███─ CEREBRO v1.5 ───────────────────────────────
+   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
    ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
    ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
    ─────▐██▄█▀───▀█▄██▌─────────────────────────────────────────────
@@ -106,12 +108,17 @@ function banner() {
    
    echo -e "$Green With Cerebro U can send, receive and check the $NC"
    echo -e "$Green status of text messages using the TextBelt API. $NC"
+   echo -e "$Green Cerebro uses the TOR network to make you harder to trace. $NC"
    echo "  "
    
    echo -e "$Green Let's begin... $NC"
    echo " "
    
    sleep 2
+
+   read -n 1 -s -r -p "Press any key to continue"
+
+   clear
 }
 
 # --------------------------------------------------------
@@ -130,6 +137,41 @@ function byemsg() {
 }
 
 # ----------------------------------------------
+
+function TOR() {
+   
+   echo "  "
+   echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
+   sleep 2
+   clear
+   sleep 1
+   echo -e "$Green [===>-------------------------] $NC"
+   sleep 1
+   clear
+   echo -e "$Green [==========>------------------] $NC"
+   sleep 1
+   clear
+   echo -e "$Green [==================>----------] $NC"
+   sleep 1
+   clear
+   echo -e "$Green [=======================>-----] $NC"
+   sleep 1
+   clear
+   
+   torghost --start
+   
+   echo -e "$Green [===========================>-] $NC"
+   sleep 1
+   clear
+   echo -e "$Green [============DONE=============] $NC"
+   echo " "
+   echo -e "$BGreen CONNECTION TO TOR NETWORK MADE $NC"
+   sleep 2
+   clear
+
+}
+
+# ---------------------------------------------------------
 
 function WEBHOOKCHECK() {
    
@@ -339,15 +381,20 @@ function helpfunction() {
 if [ "$1" == "--statuscheck" ]
 
 then
+   TOR
    banner
    SMSCHECK
+   torghost --stop
    byemsg
 
 elif [ "$1" == "--sendsms" ]
 
 then
+   TOR
    banner
    SENDSMS
+   torghost --stop
+   byemsg
 
 elif [ "$1" == "--help" ]
 
@@ -357,23 +404,33 @@ then
 elif [ "$1" == "--quotacheck" ]
 
 then
+   TOR
    banner
    QUOTACHECK
+   torghost --stop
+   byemsg
 
 elif [ "$1" == "--testsms" ]
 
 then
+   TOR
    banner
    TESTSMS
+   torghost --stop
+   byemsg
 
 elif [ $# -le 0 ]
 
 then
+   echo " "
    echo -e "$Red No arguments specified! $NC"
    echo -e "$Red Use$NC $BRed--help$NC $Red to display options.$NC"
+   echo " "
 
 else
+   echo " "
    echo -e "$Red No such argument available!$NC"
-   echo -e "$Red Use$NC $BRed--help$NC $Red to display options.$NC" 
+   echo -e "$Red Use$NC $BRed--help$NC $Red to display options.$NC"
+   echo " "
 
 fi
