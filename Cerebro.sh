@@ -2,11 +2,13 @@
 
 # Author: TheG0df2ther
 
+
+
 #                    ____
 #                 _.' :  `._                         ________________________________________
 #             .-.'`.  ;   .'`.-.                    /                                        \
-#    __      / : ___\ ;  /___ ; \      __          |    Inportant to stay anonymous...        |
-#  ,'_ ""--.:__;".-.";: :".-.":__;.--"" _`,        |                                 -Yoda    |
+#    __      / : ___\ ;  /___ ; \      __          |  Inportant to stay anonymous, it is...   |
+#  ,'_ ""--.:__;".-.";: :".-.":__;.--"" _`,        |                                  -Yoda   |
 #  :' `.t""--.. '<@.`;_  ',@>` ..--""j.' `;        |  _______________________________________/
 #       `:-.._J '-.-'L__ `-- ' L_..-;'              \/
 #         "-.__ ;  .-"  "-.  : __.-"
@@ -31,6 +33,9 @@
 #          :-""-.`./-.'     /    `.___.'
 #                \ `t  ._  /  bug :F_P:
 #                 "-.t-._:'
+
+
+
 
 
 # Colors and special caracters
@@ -118,17 +123,17 @@ On_IWhite='\033[0;107m'   # White
 function banner() {
    
    echo -e "$Green
-   ─────────────────────────────────────────────────────────────────
-   ──────────▄▄▄▄▄──────────────────────────────────────────────────
-   ───────▄█████████▄───────────────────────────────────────────────
-   ──────███▄─────▄███─ CEREBRO v1.5 ───────────────────────────────
-   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
-   ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
-   ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
-   ─────▐██▄█▀───▀█▄██▌─────────────────────────────────────────────
-   ──────▀██▄▄▄▄▄▄▄██▀──────────────────────────────────────────────
-   ────────▀▀█████▀▀────────────────────────────────────────────────
-   ───────────────────────────────────────────────────────────────── $NC"
+  ─────────────────────────────────────────────────────────────────
+  ──────────▄▄▄▄▄──────────────────────────────────────────────────
+  ───────▄█████████▄───────────────────────────────────────────────
+  ──────███▄─────▄███─$BLINK CEREBRO v1.6$NC $Green───────────────────────────────
+  ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
+  ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
+  ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
+  ─────▐██▄█▀───▀█▄██▌─────────────────────────────────────────────
+  ──────▀██▄▄▄▄▄▄▄██▀──────────────────────────────────────────────
+  ────────▀▀█████▀▀────────────────────────────────────────────────
+  ───────────────────────────────────────────────────────────────── $NC"
    
    echo " "
    echo -e "$BGreen Hello Professor... $NC"
@@ -147,7 +152,7 @@ function banner() {
    
    sleep 2
 
-   read -n 1 -s -r -p "Press any key to continue"
+   read -n 1 -s -r -p " Press any key to continue"
 
    clear
 }
@@ -163,6 +168,7 @@ function byemsg() {
    sleep 4
    echo " "
    echo -e "$BGreen Bye Professor... $NC"
+   echo " "
    sleep 2
    exit
 }
@@ -204,26 +210,23 @@ function TOR() {
 
 # ---------------------------------------------------------
 
-function WEBHOOKCHECK() {
+function REPLIECHECK() {
+   echo "  "
+   echo -e "$Green Webhook url (example yourwebsite.com). $NC"
+   echo -e "$Green This is the website you expect to get a replie on: $NC"
+   echo "  "
    
-   if [ "$WEBHOOK" == "" ]
+   read WEBHOOK
    
-   then
-      byemsg
-   
-   else
-      REPLIECHECK
-   fi
-
-   function REPLIECHECK() {
-      echo "  "
-      echo -e "$BGreen Listening for replies..."
-      while true
-      do
-         curl https://"$WEBHOOK"/api/handleSmsReply
-      done
-   }
+   echo -e "$BGreen Listening for replies..."
+   while true
+   do
+       sleep 8
+       curl https://"$WEBHOOK"/api/handleSmsReply
+   done
 }
+
+# --------------------------------------------------------
 
 function SENDSMS() {
    
@@ -240,62 +243,20 @@ function SENDSMS() {
    read SMS
    
    echo "  "
-   echo -e "$Green Webhook url (example yourwebsite.com). Default = no replie: $NC"
+   echo -e "$Green Webhook url (example yourwebsite.com). $NC"
+   echo -e "$Green Use this option if you wnat to be able to receive a replie: $NC"
    echo "  "
    
    read WEBHOOK
    
    echo "  "
-   echo -e "$Green TextBelt API key. Default key = textbelt (1 free text per day): $NC"
+   echo -e "$Green TextBelt API key (use the key textbelt to get 1 free text per day): $NC"
    echo "  "
    
    read INPUTKEY
-   
-   function smssend() {
-      SMSRESULT=$(curl -X POST https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d key="$KEY")
-   }
-   
-   function smssendwithwebhook() {
-      SMSRESULT=$(curl -X POST https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d replyWebhookUrl='https://"$WEBHOOK"/api/handleSmsReply' -d key="$KEY")
-   }
 
-   function keycheck() {
-      
-      if [ "$INPUTKEY" == "" ]
-      
-      then
-         KEY="textbelt"
-         smssend
-      
-      else
-         KEY="$INPUTKEY"
-         smssend
-      fi
-   }
-   
-   function webhookkeycheck() {
-      
-      if [ "$INPUTKEY" == "" ]
-      
-      then
-         KEY="textbelt"
-         smssendwithwebhook
-      
-      else
-         KEY="$INPUTKEY"
-         smssendwithwebhook
-      fi
-   }
+   SMSRESULT=$(curl -X POST https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d replyWebhookUrl='https://"$WEBHOOK"/api/handleSmsReply' -d key="$INPUTKEY")
 
-   if [ "$WEBHOOK" == "" ]
-   
-   then
-      keycheck
-   
-   else
-      webhookkeycheck
-   fi
-   
    if grep -q true <<<"$SMSRESULT"
    
    then
@@ -305,7 +266,8 @@ function SENDSMS() {
        echo -e "$BGreen TextBelt response: $NC"
        echo " "
        echo "$SMSRESULT"
-       WEBHOOKCHECK
+       echo "  "
+       byemsg
     else
        echo "  "
        echo -e "$BRed FAIL $NC"
@@ -404,6 +366,7 @@ function helpfunction() {
    echo -e "$BGreen Send text message: --sendsms $NC"
    echo -e "$BGreen Check if you have remaining quota: --quotacheck $NC"
    echo -e "$BGreen Test if everything is working: --testsms $NC"
+   echo -e "$BGreen Wait for replie using webhook: --repliecheck $NC"
    echo "  "
 }
 
@@ -415,6 +378,15 @@ then
    TOR
    banner
    SMSCHECK
+   torghost --stop
+   byemsg
+
+elif [ "$1" == "--repliecheck" ]
+
+then
+   TOR
+   banner
+   REPLIECHECK
    torghost --stop
    byemsg
 
