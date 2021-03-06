@@ -16,6 +16,10 @@ OR
 
 ```chmod +x Cerebro.sh && ./Cerebro.sh --help```
 
+## Dependencies
+
+``` TORGHOST: https://github.com/SusmithKrishnan/torghost```
+
 ## Cerebro
 
 ### Send text message function output
