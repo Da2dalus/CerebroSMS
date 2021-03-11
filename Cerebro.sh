@@ -32,10 +32,6 @@
 #                \ `t  ._  /  bug :F_P:
 #                 "-.t-._:'
 
-
-
-
-
 # Colors and special caracters
 
 # Reset
@@ -124,7 +120,7 @@ function banner() {
   ─────────────────────────────────────────────────────────────────
   ──────────▄▄▄▄▄──────────────────────────────────────────────────
   ───────▄█████████▄───────────────────────────────────────────────
-  ──────███▄─────▄███─$BLINK CEREBRO v1.6$NC $Green───────────────────────────────
+  ──────███▄─────▄███─$BLINK CEREBRO v1.7$NC $Green───────────────────────────────
   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
   ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
   ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
@@ -180,24 +176,42 @@ function TOR() {
    sleep 2
    clear
    sleep 1
-   echo -e "$Green [===>-------------------------] $NC"
+   echo "  "
+   echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
+   echo " "
+   echo -e "$Green [===>-------------------------] $NC"  
    sleep 1
    clear
+   echo "  "
+   echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
+   echo " "
    echo -e "$Green [==========>------------------] $NC"
    sleep 1
    clear
+   echo "  "
+   echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
+   echo " "
    echo -e "$Green [==================>----------] $NC"
+   
+   tor &
+   
    sleep 1
    clear
+   echo "  "
+   echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
+   echo " "
    echo -e "$Green [=======================>-----] $NC"
    sleep 1
    clear
-   
-   torghost --start
-   
-   echo -e "$Green [===========================>-] $NC"
+   echo "  "
+   echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
+   echo " "
+   echo -e "$Green [===========================>-] $NC"   
    sleep 1
    clear
+   echo "  "
+   echo " "
+   echo " "
    echo -e "$Green [============DONE=============] $NC"
    echo " "
    echo -e "$BGreen CONNECTION TO TOR NETWORK MADE $NC"
@@ -220,7 +234,7 @@ function REPLIECHECK() {
    while true
    do
        sleep 8
-       curl https://"$WEBHOOK"/api/handleSmsReply
+       curl -socks5-hostname 127.0.0.1:9050 https://"$WEBHOOK"/api/handleSmsReply
    done
 }
 
@@ -253,7 +267,7 @@ function SENDSMS() {
    
    read INPUTKEY
 
-   SMSRESULT=$(curl -X POST https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d replyWebhookUrl='https://"$WEBHOOK"/api/handleSmsReply' -d key="$INPUTKEY")
+   SMSRESULT=$(curl -X POST -socks5-hostname 127.0.0.1:9050 https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d replyWebhookUrl='https://"$WEBHOOK"/api/handleSmsReply' -d key="$INPUTKEY")
 
    if grep -q true <<<"$SMSRESULT"
    
@@ -288,7 +302,7 @@ function SMSCHECK() {
    
    read TEXTID
    
-   STATUSRESULT=$(curl https://textbelt.com/status/"$TEXTID")
+   STATUSRESULT=$(curl -socks5-hostname 127.0.0.1:9050 https://textbelt.com/status/"$TEXTID")
    
    echo "  "
    echo -e "$BGreen TextBelt response: $NC"
@@ -307,7 +321,7 @@ function QUOTACHECK() {
    
    read KEY
    
-   STATUSRESULT=$(curl https://textbelt.com/quota/"$KEY")
+   STATUSRESULT=$(curl -socks5-hostname 127.0.0.1:9050 https://textbelt.com/quota/"$KEY")
    
    echo " "
    echo -e "$BGreen TextBelt response: $NC"
@@ -327,7 +341,7 @@ function TESTSMS() {
    read KEY
    
    KEY=$KEY"_test"
-   TESTRESULT=$(curl -X POST https://textbelt.com/text --data-urlencode phone="8999000" --data-urlencode message="hi" -d key="$KEY")
+   TESTRESULT=$(curl -X POST -socks5-hostname 127.0.0.1:9050 https://textbelt.com/text --data-urlencode phone="8999000" --data-urlencode message="hi" -d key="$KEY")
    
    if grep -q true <<<"$TESTRESULT"
    
@@ -376,7 +390,7 @@ then
    TOR
    banner
    SMSCHECK
-   torghost --stop
+   killall -e tor
    byemsg
 
 elif [ "$1" == "--repliecheck" ]
@@ -385,7 +399,7 @@ then
    TOR
    banner
    REPLIECHECK
-   torghost --stop
+   killall -e tor
    byemsg
 
 elif [ "$1" == "--sendsms" ]
@@ -394,7 +408,7 @@ then
    TOR
    banner
    SENDSMS
-   torghost --stop
+   killall -e tor
    byemsg
 
 elif [ "$1" == "--help" ]
@@ -408,7 +422,7 @@ then
    TOR
    banner
    QUOTACHECK
-   torghost --stop
+   killall -e tor
    byemsg
 
 elif [ "$1" == "--testsms" ]
@@ -417,7 +431,7 @@ then
    TOR
    banner
    TESTSMS
-   torghost --stop
+   killall -e tor
    byemsg
 
 elif [ $# -le 0 ]
