@@ -18,7 +18,8 @@ OR
 
 ## Dependencies
 
-``` TORGHOST: https://github.com/SusmithKrishnan/torghost```
+``` culr: apt install curl```
+``` tor: apt install tor```
 
 ## Cerebro
 
