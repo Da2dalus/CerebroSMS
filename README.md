@@ -10,11 +10,9 @@ Cerebro uses the TOR network to make you harder to trace.
 
 ### Show options
 
-```sudo bash Cerebro.sh --help```
+```sudo Cerebro --help```
 
-OR
-
-```chmod +x Cerebro.sh && sudo ./Cerebro.sh --help```
+###
 
 ## Dependencies
 
