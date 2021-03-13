@@ -15,10 +15,20 @@ Cerebro uses the TOR network to make you harder to trace.
 ### Options
 
 ``` Show this page: --help ```
+
+
 ``` Check text message status: --statuscheck ```
+
+
 ``` Send text message: --sendsms ```
+
+
 ``` Check if you have remaining quota: --quotacheck ```
+
+
 ``` Test if everything is working: --testsms ```
+
+
 ``` Wait for replie using webhook: --repliecheck```
 
 ## Dependencies
