@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Author: TheG0df2ther
+# Author: Da2dalus
 # Description: Send anonymous text messages with TOR and the TextBelt API
 
 #                    ____
