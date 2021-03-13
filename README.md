@@ -28,4 +28,4 @@ OR
 
 ## Install
 
-```git clone https://github.com/TheG0df2ther/Cerebro.git```
+```git clone https://github.com/Da2dalus/Cerebro.git```
