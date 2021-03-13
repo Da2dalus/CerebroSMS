@@ -111,6 +111,16 @@ On_IWhite='\033[0;107m'   # White
 
 # List made by Shakiba Moshiri
 
+# Check if program is running as root ------------------------------------
+
+if [ "$EUID" -ne 0 ]
+then
+   echo " "
+   echo "$BRed Please run as root! $NC"
+   echo " "
+   exit
+fi
+
 # Banner and welcoming ----------------------------------------------------
 
 
@@ -120,7 +130,7 @@ function banner() {
   ─────────────────────────────────────────────────────────────────
   ──────────▄▄▄▄▄──────────────────────────────────────────────────
   ───────▄█████████▄───────────────────────────────────────────────
-  ──────███▄─────▄███─$BLINK CEREBRO v1.7$NC $Green───────────────────────────────
+  ──────███▄─────▄███─$BLINK CEREBRO v1.8$NC $Green───────────────────────────────
   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
   ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
   ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
@@ -133,7 +143,7 @@ function banner() {
    echo -e "$BGreen Hello Professor... $NC"
    echo -e "$Green Welcome to Cerebro $NC"
    
-   sleep 3
+   sleep 1
    echo " "
    
    echo -e "$Green With Cerebro U can send, receive and check the $NC"
@@ -155,6 +165,7 @@ function banner() {
 
 function byemsg() {
    
+   sudo killall -e tor
    echo "  "
    echo -e "$Green Done... $NC"
    sleep 3
@@ -233,8 +244,8 @@ function REPLIECHECK() {
    echo -e "$BGreen Listening for replies..."
    while true
    do
+       curl -# -socks5-hostname 127.0.0.1:9050 https://"$WEBHOOK"/api/handleSmsReply
        sleep 8
-       curl --socks5-hostname 127.0.0.1:9050 https://"$WEBHOOK"/api/handleSmsReply
    done
 }
 
@@ -267,7 +278,7 @@ function SENDSMS() {
    
    read INPUTKEY
 
-   SMSRESULT=$(curl -X POST --socks5-hostname 127.0.0.1:9050 https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d replyWebhookUrl='https://"$WEBHOOK"/api/handleSmsReply' -d key="$INPUTKEY")
+   SMSRESULT=$(curl -# -X POST -socks5-hostname 127.0.0.1:9050 https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d replyWebhookUrl='https://"$WEBHOOK"/api/handleSmsReply' -d key="$INPUTKEY")
 
    if grep -q true <<<"$SMSRESULT"
    
@@ -302,7 +313,7 @@ function SMSCHECK() {
    
    read TEXTID
    
-   STATUSRESULT=$(curl --socks5-hostname 127.0.0.1:9050 https://textbelt.com/status/"$TEXTID")
+   STATUSRESULT=$(curl -# -socks5-hostname 127.0.0.1:9050 https://textbelt.com/status/"$TEXTID")
    
    echo "  "
    echo -e "$BGreen TextBelt response: $NC"
@@ -321,7 +332,7 @@ function QUOTACHECK() {
    
    read KEY
    
-   STATUSRESULT=$(curl --socks5-hostname 127.0.0.1:9050 https://textbelt.com/quota/"$KEY")
+   STATUSRESULT=$(curl -# -socks5-hostname 127.0.0.1:9050 https://textbelt.com/quota/"$KEY")
    
    echo " "
    echo -e "$BGreen TextBelt response: $NC"
@@ -341,7 +352,7 @@ function TESTSMS() {
    read KEY
    
    KEY=$KEY"_test"
-   TESTRESULT=$(curl -X POST --socks5-hostname 127.0.0.1:9050 https://textbelt.com/text --data-urlencode phone="8999000" --data-urlencode message="hi" -d key="$KEY")
+   TESTRESULT=$(curl -# -X POST -socks5-hostname 127.0.0.1:9050 https://textbelt.com/text --data-urlencode phone="8999000" --data-urlencode message="hi" -d key="$KEY")
    
    if grep -q true <<<"$TESTRESULT"
    
@@ -390,7 +401,6 @@ then
    TOR
    banner
    SMSCHECK
-   killall -e tor
    byemsg
 
 elif [ "$1" == "--repliecheck" ]
@@ -399,7 +409,6 @@ then
    TOR
    banner
    REPLIECHECK
-   killall -e tor
    byemsg
 
 elif [ "$1" == "--sendsms" ]
@@ -408,7 +417,6 @@ then
    TOR
    banner
    SENDSMS
-   killall -e tor
    byemsg
 
 elif [ "$1" == "--help" ]
@@ -422,7 +430,6 @@ then
    TOR
    banner
    QUOTACHECK
-   killall -e tor
    byemsg
 
 elif [ "$1" == "--testsms" ]
@@ -431,7 +438,6 @@ then
    TOR
    banner
    TESTSMS
-   killall -e tor
    byemsg
 
 elif [ $# -le 0 ]
