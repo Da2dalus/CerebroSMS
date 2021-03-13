@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Author: TheG0df2ther
+# Description: Send anonymous text messages with TOR and the TextBelt API
 
 #                    ____
 #                 _.' :  `._                         ________________________________________
@@ -116,7 +117,7 @@ On_IWhite='\033[0;107m'   # White
 if [ "$EUID" -ne 0 ]
 then
    echo " "
-   echo "$BRed Please run as root! $NC"
+   echo -e "$BRed Please run as root! $NC"
    echo " "
    exit
 fi
@@ -130,7 +131,7 @@ function banner() {
   ─────────────────────────────────────────────────────────────────
   ──────────▄▄▄▄▄──────────────────────────────────────────────────
   ───────▄█████████▄───────────────────────────────────────────────
-  ──────███▄─────▄███─$BLINK CEREBRO v1.8$NC $Green───────────────────────────────
+  ──────███▄─────▄███─$BLINK CEREBRO v1.9$NC $Green───────────────────────────────
   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
   ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
   ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
@@ -165,6 +166,7 @@ function banner() {
 
 function byemsg() {
    
+   echo " "
    sudo killall -e tor
    echo "  "
    echo -e "$Green Done... $NC"
@@ -221,11 +223,9 @@ function TOR() {
    sleep 1
    clear
    echo "  "
-   echo " "
+   echo -e "$BGreen CONNECTION TO TOR NETWORK MADE $NC"
    echo " "
    echo -e "$Green [============DONE=============] $NC"
-   echo " "
-   echo -e "$BGreen CONNECTION TO TOR NETWORK MADE $NC"
    sleep 2
    clear
 
@@ -244,8 +244,10 @@ function REPLIECHECK() {
    echo -e "$BGreen Listening for replies..."
    while true
    do
-       curl -# -socks5-hostname 127.0.0.1:9050 https://"$WEBHOOK"/api/handleSmsReply
-       sleep 8
+      echo -e "$BGreen ---------------------------------------------- $NC"
+      curl -# -socks5-hostname 127.0.0.1:9050 https://"$WEBHOOK"/api/handleSmsReply
+      echo -e "$BGreen ---------------------------------------------- $NC"
+      sleep 8
    done
 }
 
@@ -279,28 +281,48 @@ function SENDSMS() {
    read INPUTKEY
 
    SMSRESULT=$(curl -# -X POST -socks5-hostname 127.0.0.1:9050 https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d replyWebhookUrl='https://"$WEBHOOK"/api/handleSmsReply' -d key="$INPUTKEY")
-
+   
    if grep -q true <<<"$SMSRESULT"
    
    then
-       echo "  "
-       echo -e "$BGreen SUCCESS $NC"
-       echo "  "
-       echo -e "$BGreen TextBelt response: $NC"
-       echo " "
-       echo "$SMSRESULT"
-       echo "  "
-       byemsg
-    else
-       echo "  "
-       echo -e "$BRed FAIL $NC"
-       echo "  "
-       echo -e "$BGreen TextBelt response: $NC"
-       echo " "
-       echo "$SMSRESULT"
-       echo " "
-       byemsg
-    fi
+      QUOTA=$(echo "$SMSRESULT" | jq '.quotaRemaining')
+      TEXTID=$(echo "$SMSRESULT" | jq '.textId')
+      echo "  "
+      echo -e "$BGreen SUCCESS $NC"
+      echo "  "
+      echo -e "$BGreen TextBelt response: $NC"
+      echo "  "
+      echo -e "$Green Remaining Quota: $QUOTA $NC"
+      echo " "
+      echo -e "$Green TextID: $TEXTID $NC"
+      echo " "
+      echo -e "$BGreen TextBelt response (JSON): $NC"
+      echo " "
+      echo -e "$BGreen ---------------------------------------------- $NC"
+      echo "$SMSRESULT"
+      echo -e "$BGreen ---------------------------------------------- $NC"
+      echo "  "
+      byemsg
+   else
+      QUOTA=$(echo "$SMSRESULT" | jq '.quotaRemaining')
+      ERROR=$(echo "$SMSRESULT" | jq '.error')
+      echo "  "
+      echo -e "$BRed FAIL $NC"
+      echo "  "
+      echo -e "$BGreen TextBelt response: $NC"
+      echo "  "
+      echo -e "$Green Remaining Quota: $QUOTA $NC"
+      echo " "
+      echo -e "$Green Error: $ERROR $NC"
+      echo " "
+      echo -e "$BGreen TextBelt response (JSON): $NC"
+      echo " "
+      echo -e "$BGreen ---------------------------------------------- $NC"
+      echo "$SMSRESULT"
+      echo -e "$BGreen ---------------------------------------------- $NC"
+      echo " "
+      byemsg
+   fi
 }
 
 # ----------------------------------------------------------------------
@@ -315,10 +337,18 @@ function SMSCHECK() {
    
    STATUSRESULT=$(curl -# -socks5-hostname 127.0.0.1:9050 https://textbelt.com/status/"$TEXTID")
    
-   echo "  "
+   STATUS=$(echo "$STATUSRESULT" | jq '.status')
+   
+   echo " "
    echo -e "$BGreen TextBelt response: $NC"
    echo " "
+   echo -e "$Green Status: $STATUS $NC"
+   echo "  "
+   echo -e "$BGreen TextBelt response (JSON): $NC"
+   echo " "
+   echo -e "$BGreen ---------------------------------------------- $NC"
    echo "$STATUSRESULT"
+   echo -e "$BGreen ---------------------------------------------- $NC"
    echo "  "
 }
 
@@ -334,10 +364,18 @@ function QUOTACHECK() {
    
    STATUSRESULT=$(curl -# -socks5-hostname 127.0.0.1:9050 https://textbelt.com/quota/"$KEY")
    
+   QUOTA=$(echo "$STATUSRESULT" | jq '.quotaRemaining')
+
    echo " "
    echo -e "$BGreen TextBelt response: $NC"
    echo " "
+   echo -e "$Green Remaining Quota: $QUOTA $NC"
+   echo " "
+   echo -e "$BGreen TextBelt response (JSON): $NC"
+   echo " "
+   echo -e "$BGreen ---------------------------------------------- $NC"
    echo "$STATUSRESULT"
+   echo -e "$BGreen ---------------------------------------------- $NC"
    echo "  "
 }
 
@@ -357,20 +395,40 @@ function TESTSMS() {
    if grep -q true <<<"$TESTRESULT"
    
    then
+      QUOTA=$(echo "$TESTRESULT" | jq '.quotaRemaining')
+      TEXTID=$(echo "$TESTRESULT" | jq '.textId')
       echo "  "
       echo -e "$BGreen SUCCESS $NC"
       echo "  "
       echo -e "$BGreen TextBelt response: $NC"
+      echo "  "
+      echo -e "$Green Remaining Quota: $QUOTA $NC"
       echo " "
+      echo -e "$Green TextID: $TEXTID $NC"
+      echo "  "
+      echo -e "$BGreen TextBelt response (JSON): $NC"
+      echo " "
+      echo -e "$BGreen ---------------------------------------------- $NC"
       echo "$TESTRESULT"
+      echo -e "$BGreen ---------------------------------------------- $NC"
       byemsg
    else
+      QUOTA=$(echo "$TESTRESULT" | jq '.quotaRemaining')
+      ERROR=$(echo "$TESTRESULT" | jq '.error')
       echo "  "
       echo -e "$BRed FAIL $NC"
       echo "  "
       echo -e "$BGreen TextBelt response: $NC"
+      echo "  "
+      echo -e "$Green Remaining Quota: $QUOTA $NC"
       echo " "
+      echo -e "$Green Error: $ERROR $NC"
+      echo "  "
+      echo -e "$BGreen TextBelt response (JSON): $NC"
+      echo " "
+      echo -e "$BGreen ---------------------------------------------- $NC"
       echo "$TESTRESULT"
+      echo -e "$BGreen ---------------------------------------------- $NC"
       echo " "
       byemsg
    fi
