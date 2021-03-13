@@ -28,4 +28,4 @@ OR
 
 ## Install
 
-```git clone https://github.com/Da2dalus/Cerebro.git```
+```sudo su && cd /bin && sudo curl https://raw.githubusercontent.com/Da2dalus/Cerebro/main/Cerebro.sh > Cerebro && sudo chmod +x Cerebro```
