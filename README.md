@@ -19,7 +19,12 @@ OR
 ## Dependencies
 
 ``` culr: apt install curl```
+
+
 ``` tor: apt install tor```
+
+
+``` jq: apt install jq ```
 
 ## Cerebro
 
