@@ -44,3 +44,10 @@ Cerebro uses the TOR network to make you harder to trace.
 ## Install
 
 ```sudo su && cd /bin && sudo curl https://raw.githubusercontent.com/Da2dalus/Cerebro/main/Cerebro.sh > Cerebro && sudo chmod +x Cerebro```
+
+
+
+
+
+
+[![Da2dalus](https://github.com/Da2dalus/Cerebro/blob/main/pictures/Da2dalus.gif)
