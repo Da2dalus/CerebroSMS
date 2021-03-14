@@ -1,1 +1,4 @@
 theme: jekyll-theme-architect
+
+- name: Bash shell beautifier
+  uses: illvart/beautysh-action@v1.0.0
