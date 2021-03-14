@@ -43,7 +43,19 @@ Cerebro uses the TOR network to make you harder to trace.
 
 ## Install
 
-```sudo su && cd /bin && sudo curl https://raw.githubusercontent.com/Da2dalus/Cerebro/main/Cerebro.sh > cerebro && sudo chmod +x cerebro```
+```sudo su```
+
+
+```cd /bin```
+
+
+```apt install jq tor curl```
+
+
+```sudo curl https://raw.githubusercontent.com/Da2dalus/Cerebro/main/Cerebro.sh > cerebro```
+
+
+```sudo chmod +x cerebro```
 
 
 
