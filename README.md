@@ -50,4 +50,29 @@ Cerebro uses the TOR network to make you harder to trace.
 
 
 
-[![Da2dalus](https://github.com/Da2dalus/Cerebro/blob/main/pictures/Da2dalus.gif)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+![Da2dalus](https://github.com/Da2dalus/Cerebro/blob/main/pictures/Da2dalus.gif)
