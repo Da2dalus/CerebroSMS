@@ -131,7 +131,7 @@ function banner() {
   ─────────────────────────────────────────────────────────────────
   ──────────▄▄▄▄▄──────────────────────────────────────────────────
   ───────▄█████████▄───────────────────────────────────────────────
-  ──────███▄─────▄███─$BLINK CEREBRO v1.9$NC $Green───────────────────────────────
+  ──────███▄─────▄███─$BLINK CEREBRO v2.0$NC $Green───────────────────────────────
   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
   ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
   ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
@@ -230,6 +230,37 @@ function TOR() {
    clear
 
 }
+
+# ----------------------------------------------------------------
+
+function update() {
+   echo " "
+   echo -e "$BGreen UPDATING... $NC"
+   sleep 1
+   clear
+   echo -e "$BGreen DOWNLOADING NEWEST VERSION... $NC"
+   echo " "
+   echo -e "$Green [======>----------------------] $NC"
+   echo " "
+   
+   sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/Cerebro.sh > $0
+   
+   sleep 1
+   clear
+   echo " "
+   echo -e "$BGreen DOWNLOADING NEWEST VERSION... $NC"
+   echo " "
+   echo -e "$Green [==================>----------] $NC"
+   sleep 1
+   clear
+   echo "  "
+   echo -e "$BGreen NEWEST VERSION INSTALLED $NC"
+   echo " "
+   echo -e "$Green [============DONE=============] $NC"
+   sleep 2
+   clear
+}
+
 
 # ---------------------------------------------------------
 
@@ -448,6 +479,7 @@ function helpfunction() {
    echo -e "$BGreen Check if you have remaining quota: --quotacheck $NC"
    echo -e "$BGreen Test if everything is working: --testsms $NC"
    echo -e "$BGreen Wait for replie using webhook: --repliecheck $NC"
+   echo -e "$BGreen Update Cerebro: --update $NC"
    echo "  "
 }
 
@@ -475,6 +507,14 @@ then
    TOR
    banner
    SENDSMS
+   byemsg
+
+elif [ "$1" == "--update" ]
+
+then
+   TOR
+   banner
+   update
    byemsg
 
 elif [ "$1" == "--help" ]
