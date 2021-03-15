@@ -31,6 +31,8 @@ Cerebro uses the TOR network to make you harder to trace.
 
 ``` Wait for replie using webhook: --repliecheck```
 
+```Update Cerebro: --update```
+
 ## Dependencies
 
 ``` culr: apt install curl```
