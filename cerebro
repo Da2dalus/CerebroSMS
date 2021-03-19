@@ -246,6 +246,7 @@ function update() {
    echo " "
    
    sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/Cerebro.sh > $0
+   sudo chmod +x $0
    
    sleep 1
    clear
