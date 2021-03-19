@@ -275,7 +275,7 @@ function install() {
 
 CAT=$(cat $0)
 
-if [[ $CAT != "#installed" ]]
+if [[ $CAT != *#installed* ]]
 then
    install
 fi
