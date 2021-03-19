@@ -59,7 +59,18 @@ Cerebro uses the TOR network to make you harder to trace.
 
 ```sudo chmod +x cerebro```
 
+OR
 
+
+```sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/Cerebro.sh > cerebro```
+
+
+
+```sudo bash cerebro```
+
+
+
+```sudo cerebro --help```
 
 
 
