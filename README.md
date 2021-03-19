@@ -10,9 +10,7 @@ Cerebro uses the TOR network to make you harder to trace.
 
 ### Show options
 
-```bash
-sudo cerebro --help
-```
+```sudo cerebro --help```
 
 ### Options
 
