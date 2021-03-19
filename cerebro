@@ -245,8 +245,8 @@ function update() {
    echo -e "$Green [======>----------------------] $NC"
    echo " "
    
-   sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/Cerebro.sh > $0
-   sudo chmod +x $0
+   sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/Cerebro.sh > cerebro
+   sudo chmod +x /usr/bin/cerebro
    
    sleep 1
    clear
