@@ -278,6 +278,8 @@ then
    install
 fi
 
+clear
+
 # ---------------------------------------------------------
 
 function REPLIECHECK() {
