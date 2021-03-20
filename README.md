@@ -34,6 +34,8 @@ Cerebro uses the TOR network to make you harder to trace.
 
 ```Update Cerebro: --update```
 
+```Print version: --version```
+
 ## Dependencies
 
 ``` culr: apt install curl```
