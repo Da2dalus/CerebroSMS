@@ -551,7 +551,7 @@ elif [ "$1" == "--help" ]
 then
    helpfunction
 
-elif [ "$1" == "--version"]
+elif [ "$1" == "--version" ]
    
    then
       VERSION
