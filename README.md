@@ -96,7 +96,7 @@ OR
 ```sudo bash cerebro --help
 
 
-```sudo chmod +x /bin/cerebro
+```sudo chmod +x /bin/cerebro```
 
 
 
