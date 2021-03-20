@@ -78,8 +78,25 @@ OR
 ```sudo cerebro --help```
 
 
+### The BREW way
 
 
+```brew tap Da2dalus/CerebroSMS https://github.com/Da2dalus/CerebroSMS.git```
+
+
+
+```brew install --cask cerebro-sms```
+
+
+
+```apt install jq tor curl```
+
+
+
+```sudo bash cerebro --help
+
+
+```sudo chmod +x /bin/cerebro
 
 
 
