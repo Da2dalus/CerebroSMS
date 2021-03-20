@@ -188,6 +188,7 @@ function VERSION() {
    echo " "
    echo -e "$BGreen Cerebro version: v2.3"
    echo " "
+}
 
 # ----------------------------------------------
 
