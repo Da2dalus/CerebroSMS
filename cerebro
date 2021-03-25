@@ -146,13 +146,14 @@ function banner() {
    echo -e "$BGreen Hello Professor... $NC"
    echo -e "$Green Welcome to Cerebro $NC"
    
-   sleep 1
    echo " "
    
    echo -e "$Green With Cerebro U can send, receive and check the $NC"
    echo -e "$Green status of text messages using the TextBelt API. $NC"
    echo -e "$Green Cerebro uses the TOR network to make you harder to trace. $NC"
    echo "  "
+   
+   sleep 1
    
    echo -e "$Green Let's begin... $NC"
    echo " "
@@ -172,13 +173,12 @@ function byemsg() {
    sudo killall -e tor
    echo "  "
    echo -e "$Green Done... $NC"
-   sleep 3
+   sleep 1
    echo -e "$Green Closing Cerebro... $NC"
-   sleep 4
+   sleep 1
    echo " "
    echo -e "$BGreen Bye Professor... $NC"
    echo " "
-   sleep 2
    exit
 }
 
