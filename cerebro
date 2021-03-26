@@ -533,7 +533,7 @@ function helpfunction() {
    echo -e "$BGreen Print version: --version $NC"
    echo " "
    echo -e "$BGreen Look at the source code to find the hidden function. $NC"
-   echo -e "$UGreen https://github.com/Da2dalus/CerebroSMS"
+   echo -e "$UGreen https://github.com/Da2dalus/CerebroSMS $NC"
    echo "  "
 }
 
