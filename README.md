@@ -98,28 +98,3 @@ OR
 
 ```sudo chmod +x /bin/cerebro```
 
-
-
-##
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-![Da2dalus](https://github.com/Da2dalus/CerebroSMS/blob/main/pictures/Da2dalus.gif)
