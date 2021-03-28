@@ -328,7 +328,7 @@ function installmenu() {
 
 CAT=$(tail -1 $0)
 
-if [[ $CAT "#installed" ]]
+if [[ $CAT == "#installed" ]]
 then
    installmenu
 fi
