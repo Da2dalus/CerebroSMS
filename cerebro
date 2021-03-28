@@ -297,7 +297,7 @@ function update() {
 
 # ---------------------------------------------------
 
-function install() {
+function installcerebro() {
    sudo echo "#installed" >> $0
    sudo mv $0 /usr/bin/cerebro
    sudo chmod +x /usr/bin/cerebro
@@ -317,7 +317,7 @@ function installmenu() {
    
    if [[ "$OINPUT" == "1" ]]
    then
-      install
+      installcerebro
    
    elif [[ "$OINPUT" == "3" ]]
    then
