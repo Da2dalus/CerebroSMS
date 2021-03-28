@@ -133,7 +133,7 @@ function banner() {
   ─────────────────────────────────────────────────────────────────
   ──────────▄▄▄▄▄──────────────────────────────────────────────────
   ───────▄█████████▄───────────────────────────────────────────────
-  ──────███▄─────▄███─$BLINK CEREBRO v2.6$NC $Green───────────────────────────────
+  ──────███▄─────▄███─$BLINK CEREBRO v2.7$NC $Green───────────────────────────────
   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
   ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
   ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
@@ -186,7 +186,7 @@ function byemsg() {
 
 function VERSION() {
    echo " "
-   echo -e "$BGreen Cerebro version: v2.6"
+   echo -e "$BGreen Cerebro version: v2.7"
    echo " "
 }
 
@@ -302,6 +302,29 @@ function install() {
    sudo mv $0 /usr/bin/cerebro
    sudo chmod +x /usr/bin/cerebro
 }
+
+function SKIP() {
+   sudo echo "#installed" >> $0
+}
+
+function installmenu() {
+   echo " "
+   echo -e "$BGreen Cerebro is not installed in the /usr/bin directory. $NC"
+   echo -e "$BGreen Do you want to install it? $NC"
+   echo " "
+   echo -e "$BGreen OPTIONS: [1] Install Cerebro [2] Skip installation [3] Skip installation (permanently) $NC"
+   read OINPUT
+   
+   if [[ "$OINPUT" == "1" ]]
+   then
+      install
+   
+   elif [[ "$OINPUT" == "3" ]]
+   then
+      SKIP
+   fi
+}
+
 
 CAT=$(tail -1 $0)
 
