@@ -317,7 +317,7 @@ function installmenu() {
    
    if [[ "$OINPUT" == "1" ]]
    then
-      installmenu
+      install
    
    elif [[ "$OINPUT" == "3" ]]
    then
@@ -330,7 +330,7 @@ CAT=$(tail -1 $0)
 
 if [[ $CAT "#installed" ]]
 then
-   install
+   installmenu
 fi
 
 clear
