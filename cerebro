@@ -317,7 +317,7 @@ function installmenu() {
    
    if [[ "$OINPUT" == "1" ]]
    then
-      install
+      installmenu
    
    elif [[ "$OINPUT" == "3" ]]
    then
