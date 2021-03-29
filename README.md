@@ -59,7 +59,7 @@ Cerebro uses the TOR network to make you harder to trace.
 ```apt install jq tor curl```
 
 
-```sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/Cerebro.sh > cerebro```
+```sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/cerebro > cerebro```
 
 
 ```sudo chmod +x cerebro```
@@ -67,7 +67,7 @@ Cerebro uses the TOR network to make you harder to trace.
 OR
 
 
-```sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/Cerebro.sh > cerebro```
+```sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/cerebro > cerebro```
 
 
 
