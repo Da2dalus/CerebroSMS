@@ -101,5 +101,8 @@ OR
 
 ##
 
+
+
 [![Github forks](https://img.shields.io/github/forks/Da2dalus/CerebroSMS.svg?style=social)](https://github.com/Da2dalus/CerebroSMS/network/members)
 [![Github followers](https://img.shields.io/github/followers/Da2dalus.svg?style=social)](https://github.com/Da2dalus)
+[![Github stars](https://img.shields.io/github/stars/Josee9988/project-template.svg?style=social)](https://github.com/Da2dalus/CerebroSMS/stargazers)
