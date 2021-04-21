@@ -124,16 +124,51 @@ then
    exit
 fi
 
+# ----------------------------------------------------------------------
+
+JQ=$(which jq)
+
+if [ "$JQ" != "/usr/bin/jq" ]
+then
+  echo " "
+  echo -e "$BRed JQ is not installed. $NC"
+  echo -e "$BRed Please install before running this program. $NC"
+  echo " "
+  exit
+fi
+
+TOR=$(which tor)
+
+if [ "$TOR" != "/usr/sbin/tor" ]
+then
+  echo " "
+  echo -e "$BRed TOR is not installed. $NC"
+  echo -e "$BRed Please install before running this program. $NC"
+  echo " "
+  exit
+fi
+
+CURL=$(which curl)
+
+if [ "$CURL" != "/usr/bin/curl" ]
+then
+  echo " "
+  echo -e "$BRed CURL is not installed. $NC"
+  echo -e "$BRed Please install before running this program. $NC"
+  echo " "
+  exit
+fi
+
 # Banner and welcoming ----------------------------------------------------
 
 
 function banner() {
-   
+
    echo -e "$Green
   ─────────────────────────────────────────────────────────────────
   ──────────▄▄▄▄▄──────────────────────────────────────────────────
   ───────▄█████████▄───────────────────────────────────────────────
-  ──────███▄─────▄███─$BLINK CEREBRO v2.7$NC $Green───────────────────────────────
+  ──────███▄─────▄███─$BLINK CEREBRO v2.8$NC $Green───────────────────────────────
   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
   ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
   ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
@@ -141,23 +176,23 @@ function banner() {
   ──────▀██▄▄▄▄▄▄▄██▀──────────────────────────────────────────────
   ────────▀▀█████▀▀────────────────────────────────────────────────
   ───────────────────────────────────────────────────────────────── $NC"
-   
+
    echo " "
    echo -e "$BGreen Hello Professor... $NC"
    echo -e "$Green Welcome to Cerebro $NC"
-   
+
    echo " "
-   
+
    echo -e "$Green With Cerebro U can send, receive and check the $NC"
    echo -e "$Green status of text messages using the TextBelt API. $NC"
    echo -e "$Green Cerebro uses the TOR network to make you harder to trace. $NC"
    echo "  "
-   
+
    sleep 1
-   
+
    echo -e "$Green Let's begin... $NC"
    echo " "
-   
+
    sleep 2
 
    read -n 1 -s -r -p " Press any key to continue"
@@ -168,7 +203,7 @@ function banner() {
 # --------------------------------------------------------
 
 function byemsg() {
-   
+
    echo " "
    sudo killall -e tor
    echo "  "
@@ -186,7 +221,7 @@ function byemsg() {
 
 function VERSION() {
    echo " "
-   echo -e "$BGreen Cerebro version: v2.7"
+   echo -e "$BGreen Cerebro version: v2.8"
    echo " "
 }
 
@@ -214,8 +249,99 @@ function DB() {
 
 # ----------------------------------------------
 
+function MENU() {
+
+  clear
+  echo " "
+  echo -e "$BGreen ------------# CEREBRO MENU #------------ $NC"
+  echo " "
+  echo -e "$Green 1. Check text message status $NC"
+  echo -e "$Green 2. Send text message $NC"
+  echo -e "$Green 3. Check if you have remaining quota $NC"
+  echo -e "$Green 4. Test if everything is working $NC"
+  echo -e "$Green 5. Wait for replie using webhook $NC"
+  echo -e "$Green 6. Update Cerebro $NC"
+  echo -e "$Green 7. Exit $NC"
+  echo " "
+
+  read -p "cerebro => " MINPUT
+
+  if [ "$MINPUT" == "1" ]
+
+  then
+     TOR
+     SMSCHECK
+     read -n 1 -s -r -p " Press any key to continue"
+     MENU
+
+  elif [ "$MINPUT" == "5" ]
+
+  then
+     TOR
+     REPLIECHECK
+     read -n 1 -s -r -p " Press any key to continue"
+     MENU
+
+  elif [ "$MINPUT" == "2" ]
+
+  then
+     TOR
+     SENDSMS
+     read -n 1 -s -r -p " Press any key to continue"
+     MENU
+
+  elif [ "$MINPUT" == "6" ]
+
+  then
+     TOR
+     update
+     read -n 1 -s -r -p " Press any key to continue"
+     MENU
+
+  elif [ "$MINPUT" == "7" ]
+
+  then
+     byemsg
+
+  elif [ "$MINPUT" == "3" ]
+
+  then
+     TOR
+     QUOTACHECK
+     read -n 1 -s -r -p " Press any key to continue"
+     MENU
+
+  elif [ "$MINPUT" == "4" ]
+
+  then
+     TOR
+     TESTSMS
+     read -n 1 -s -r -p " Press any key to continue"
+     MENU
+
+  elif [ "$MINPUT" -le 0 ]
+
+  then
+     echo " "
+     echo -e "$Red No arguments specified! $NC"
+     echo " "
+     read -n 1 -s -r -p " Press any key to continue"
+     MENU
+
+  else
+     echo " "
+     echo -e "$Red No such argument available! $NC"
+     echo " "
+     read -n 1 -s -r -p " Press any key to continue"
+     MENU
+
+  fi
+}
+
+# ------------------------------------------------------
+
 function TOR() {
-   
+
    echo "  "
    echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
    sleep 2
@@ -224,7 +350,7 @@ function TOR() {
    echo "  "
    echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
    echo " "
-   echo -e "$Green [===>-------------------------] $NC"  
+   echo -e "$Green [===>-------------------------] $NC"
    sleep 1
    clear
    echo "  "
@@ -237,9 +363,10 @@ function TOR() {
    echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
    echo " "
    echo -e "$Green [==================>----------] $NC"
-   
+
+   sudo killall -e tor
    tor &
-   
+
    sleep 1
    clear
    echo "  "
@@ -251,7 +378,7 @@ function TOR() {
    echo "  "
    echo -e "$BGreen MAKING CONNECTION TO TOR NETWORK... $NC"
    echo " "
-   echo -e "$Green [===========================>-] $NC"   
+   echo -e "$Green [===========================>-] $NC"
    sleep 1
    clear
    echo "  "
@@ -274,11 +401,11 @@ function update() {
    echo " "
    echo -e "$Green [======>----------------------] $NC"
    echo " "
-   
+
    sudo curl https://raw.githubusercontent.com/Da2dalus/CerebroSMS/main/cerebro > cerebro
    sudo mv cerebro /usr/bin/cerebro
    sudo chmod +x /usr/bin/cerebro
-   
+
    sleep 1
    clear
    echo " "
@@ -314,11 +441,11 @@ function installmenu() {
    echo " "
    echo -e "$BGreen OPTIONS: [1] Install Cerebro [2] Skip installation [3] Skip installation (permanently) $NC"
    read OINPUT
-   
+
    if [[ "$OINPUT" == "1" ]]
    then
       installcerebro
-   
+
    elif [[ "$OINPUT" == "3" ]]
    then
       SKIP
@@ -342,9 +469,9 @@ function REPLIECHECK() {
    echo -e "$Green Webhook url (example yourwebsite.com). $NC"
    echo -e "$Green This is the website you expect to get a replie on: $NC"
    echo "  "
-   
+
    read WEBHOOK
-   
+
    echo -e "$BGreen Listening for replies..."
    while true
    do
@@ -358,36 +485,36 @@ function REPLIECHECK() {
 # --------------------------------------------------------
 
 function SENDSMS() {
-   
+
    echo "  "
    echo -e "$Green Phone: $NC"
    echo "  "
-   
+
    read PHONE
-   
+
    echo "  "
    echo -e "$Green Message: $NC"
    echo "  "
-   
+
    read SMS
-   
+
    echo "  "
    echo -e "$Green Webhook url (example yourwebsite.com). $NC"
    echo -e "$Green Use this option if you wnat to be able to receive a replie: $NC"
    echo "  "
-   
+
    read WEBHOOK
-   
+
    echo "  "
    echo -e "$Green TextBelt API key (use the key textbelt to get 1 free text per day): $NC"
    echo "  "
-   
+
    read INPUTKEY
 
    SMSRESULT=$(curl -# -X POST -socks5-hostname 127.0.0.1:9050 https://textbelt.com/text --data-urlencode phone="$PHONE" --data-urlencode message="$SMS" -d replyWebhookUrl='https://"$WEBHOOK"/api/handleSmsReply' -d key="$INPUTKEY")
-   
+
    if grep -q true <<<"$SMSRESULT"
-   
+
    then
       QUOTA=$(echo "$SMSRESULT" | jq '.quotaRemaining')
       TEXTID=$(echo "$SMSRESULT" | jq '.textId')
@@ -406,7 +533,6 @@ function SENDSMS() {
       echo "$SMSRESULT"
       echo -e "$BGreen ---------------------------------------------- $NC"
       echo "  "
-      byemsg
    else
       QUOTA=$(echo "$SMSRESULT" | jq '.quotaRemaining')
       ERROR=$(echo "$SMSRESULT" | jq '.error')
@@ -425,24 +551,23 @@ function SENDSMS() {
       echo "$SMSRESULT"
       echo -e "$BGreen ---------------------------------------------- $NC"
       echo " "
-      byemsg
    fi
 }
 
 # ----------------------------------------------------------------------
 
 function SMSCHECK() {
-   
+
    echo "  "
    echo -e "$Green Text ID (example 12589): $NC"
    echo "  "
-   
+
    read TEXTID
-   
+
    STATUSRESULT=$(curl -# -socks5-hostname 127.0.0.1:9050 https://textbelt.com/status/"$TEXTID")
-   
+
    STATUS=$(echo "$STATUSRESULT" | jq '.status')
-   
+
    echo " "
    echo -e "$BGreen TextBelt response: $NC"
    echo " "
@@ -459,15 +584,15 @@ function SMSCHECK() {
 # -------------------------------------------------------------------
 
 function QUOTACHECK() {
-   
+
    echo "  "
    echo -e "$Green TextBelt API Key (example abc123): $NC"
    echo "  "
-   
+
    read KEY
-   
+
    STATUSRESULT=$(curl -# -socks5-hostname 127.0.0.1:9050 https://textbelt.com/quota/"$KEY")
-   
+
    QUOTA=$(echo "$STATUSRESULT" | jq '.quotaRemaining')
 
    echo " "
@@ -486,18 +611,18 @@ function QUOTACHECK() {
 # ----------------------------------------------------------------------
 
 function TESTSMS() {
-   
+
    echo "  "
    echo -e "$Green TextBelt API key: $NC"
    echo "  "
-   
+
    read KEY
-   
+
    KEY=$KEY"_test"
    TESTRESULT=$(curl -# -X POST -socks5-hostname 127.0.0.1:9050 https://textbelt.com/text --data-urlencode phone="8999000" --data-urlencode message="hi" -d key="$KEY")
-   
+
    if grep -q true <<<"$TESTRESULT"
-   
+
    then
       QUOTA=$(echo "$TESTRESULT" | jq '.quotaRemaining')
       TEXTID=$(echo "$TESTRESULT" | jq '.textId')
@@ -515,7 +640,6 @@ function TESTSMS() {
       echo -e "$BGreen ---------------------------------------------- $NC"
       echo "$TESTRESULT"
       echo -e "$BGreen ---------------------------------------------- $NC"
-      byemsg
    else
       QUOTA=$(echo "$TESTRESULT" | jq '.quotaRemaining')
       ERROR=$(echo "$TESTRESULT" | jq '.error')
@@ -534,15 +658,14 @@ function TESTSMS() {
       echo "$TESTRESULT"
       echo -e "$BGreen ---------------------------------------------- $NC"
       echo " "
-      byemsg
    fi
-   
+
 }
 
 # ------------------------------------------------------------------
 
 function helpfunction() {
-   
+
    echo "  "
    echo -e "$BGreen Available opions: $NC"
    echo -e " "
@@ -554,6 +677,7 @@ function helpfunction() {
    echo -e "$BGreen Wait for replie using webhook: --repliecheck $NC"
    echo -e "$BGreen Update Cerebro: --update $NC"
    echo -e "$BGreen Print version: --version $NC"
+   echo -e "$BGreen Show CLI menu: --menu $NC"
    echo " "
    echo -e "$BGreen Look at the source code to find the hidden function. $NC"
    echo -e "$UGreen https://github.com/Da2dalus/CerebroSMS $NC"
@@ -578,6 +702,12 @@ then
    REPLIECHECK
    byemsg
 
+elif [ "$1" == "--menu" ]
+
+then
+   banner
+   MENU
+
 elif [ "$1" == "--sendsms" ]
 
 then
@@ -600,7 +730,7 @@ then
    helpfunction
 
 elif [ "$1" == "--version" ]
-   
+
    then
       VERSION
 
@@ -625,7 +755,7 @@ then
    TESTSMS
    byemsg
 
-elif [ $# -le 0 ]
+elif [ "$#" -le 0 ]
 
 then
    echo " "
