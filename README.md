@@ -34,7 +34,12 @@ Cerebro uses the TOR network to make you harder to trace.
 
 ``` Wait for replie using webhook: --repliecheck```
 
+
 ```Update Cerebro: --update```
+
+
+```Show CLI menu: --menu```
+
 
 ```Print version: --version```
 
