@@ -168,7 +168,7 @@ function banner() {
   ─────────────────────────────────────────────────────────────────
   ──────────▄▄▄▄▄──────────────────────────────────────────────────
   ───────▄█████████▄───────────────────────────────────────────────
-  ──────███▄─────▄███─$BLINK CEREBRO v2.8$NC $Green───────────────────────────────
+  ──────███▄─────▄███─$BLINK CEREBRO v2.9$NC $Green───────────────────────────────
   ─────▐██─▀█▄─▄█▀─██▌─────────────────────────────────────────────
   ─────▐█▌───▀█▀───▐█▌─────────────────────────────────────────────
   ─────▐█▌──▄█▀█▄──▐█▌─────────────────────────────────────────────
@@ -221,7 +221,7 @@ function byemsg() {
 
 function VERSION() {
    echo " "
-   echo -e "$BGreen Cerebro version: v2.8"
+   echo -e "$BGreen Cerebro version: v2.9"
    echo " "
 }
 
@@ -271,6 +271,7 @@ function MENU() {
   then
      TOR
      SMSCHECK
+     sudo killall -e tor
      read -n 1 -s -r -p " Press any key to continue"
      MENU
 
@@ -279,6 +280,7 @@ function MENU() {
   then
      TOR
      REPLIECHECK
+     sudo killall -e tor
      read -n 1 -s -r -p " Press any key to continue"
      MENU
 
@@ -287,6 +289,7 @@ function MENU() {
   then
      TOR
      SENDSMS
+     sudo killall -e tor
      read -n 1 -s -r -p " Press any key to continue"
      MENU
 
@@ -295,6 +298,7 @@ function MENU() {
   then
      TOR
      update
+     sudo killall -e tor
      read -n 1 -s -r -p " Press any key to continue"
      MENU
 
@@ -308,6 +312,7 @@ function MENU() {
   then
      TOR
      QUOTACHECK
+     sudo killall -e tor
      read -n 1 -s -r -p " Press any key to continue"
      MENU
 
@@ -316,6 +321,7 @@ function MENU() {
   then
      TOR
      TESTSMS
+     sudo killall -e tor
      read -n 1 -s -r -p " Press any key to continue"
      MENU
 
