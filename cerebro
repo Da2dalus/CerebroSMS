@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#github-action genshdoc
+
 # Author: Da2dalus
 # Description: Send anonymous text messages with TOR and the TextBelt API
 
