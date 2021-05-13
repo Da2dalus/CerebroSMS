@@ -104,7 +104,7 @@ OR
 ```sudo chmod +x /bin/cerebro```
 
 ##
-
+(!TIP) Ask questions on the irc channel #cerebro-sms on freenode.net
 
 
 [![Github forks](https://img.shields.io/github/forks/Da2dalus/CerebroSMS.svg?style=social)](https://github.com/Da2dalus/CerebroSMS/network/members)
